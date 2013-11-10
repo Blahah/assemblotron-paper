@@ -14,3 +14,4 @@
     4. Evidence that assemblotron assemblies score better on useful metrics than using defaults or authors' choices of settings
 3. Replace USEARCH with SeqAn alignment
 4. Bundle all non-Ruby dependencies so there's a single-command install on all platforms
+5. All tests passing, >90% test coverage
