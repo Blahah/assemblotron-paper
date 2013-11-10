@@ -1,7 +1,7 @@
 assemblotron-paper
 ==================
 
-Paper for Assemblotron
+Paper for [assemblotron](https://github.com/Blahah/assemblotron)
 
 ## Plans
 
