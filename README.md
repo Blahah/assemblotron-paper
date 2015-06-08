@@ -16,3 +16,7 @@ Paper for [assemblotron](https://github.com/Blahah/assemblotron)
 ```
 
 Final output will be in `paper.pdf`
+
+## Resources
+
+- [Zotero public reference collection for this paper] (https://www.zotero.org/groups/357882)
