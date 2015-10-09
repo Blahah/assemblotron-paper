@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+require 'assemblotron-paper'
+require 'trollop'
+
+opts = Trollop::options do
+  opt :all, "Run the entire paper analysis"
+  opt :threads, "Number of threads to use", :default => 8, :type => :int
+end
+
+paper = AssemblotronPaper::AssemblotronPaper.new
