@@ -12,10 +12,10 @@ Paper for [assemblotron](https://github.com/Blahah/assemblotron)
 ## To generate the paper
 
 ```bash
-./compile_paper.sh
+git clone https://github.com/Blahah/assemblotron-paper.git
+bundle install
+bundle exec bin/paper --help
 ```
-
-Final output will be in `paper.pdf`
 
 ## Resources
 
