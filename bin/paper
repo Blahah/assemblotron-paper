@@ -5,7 +5,17 @@ require 'trollop'
 
 opts = Trollop::options do
   opt :all, "Run the entire paper analysis"
+  opt :get_reads, "Download read data (if not already present)"
+  opt :sweep, "Run full sweeps"
   opt :threads, "Number of threads to use", :default => 8, :type => :int
 end
 
 paper = AssemblotronPaper::AssemblotronPaper.new
+
+if opts.all || opts.get_reads
+  paper.maybe_get_read_data
+end
+
+if opts.all || opts.sweep
+  paper.run_full_sweeps
+end
