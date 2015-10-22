@@ -57,8 +57,9 @@ module AssemblotronPaper
                   cmd = Cmd.new(cmdstr)
                   cmd.run
 
-                  save_logs(cmd.stdout, species.to_s, sampler, rate, rep_no)
-                  save_csv(cmd.stdout, species.to_s, sampler, rate, rep_no)
+                  ratestr = "#{(rate * 100).to_i}pc"
+                  save_logs(cmd.stdout, species.to_s, sampler, ratestr, rep_no)
+                  save_csv(cmd.stdout, species.to_s, sampler, ratestr, rep_no)
 
                 end
 
@@ -81,7 +82,7 @@ module AssemblotronPaper
       logfile = "#{args.join '_'}.log"
       logfile = File.expand_path logfile
 
-      File.open(logfile) do |f|
+      File.open(logfile, 'w') do |f|
 
         f.write stdout
         log.info "Assemblotron sweep log saved to #{logfile}"
