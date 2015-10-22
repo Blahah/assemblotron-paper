@@ -14,6 +14,11 @@ module AssemblotronPaper
       input_files_yaml = File.join(@gem_dir, 'metadata', 'input_files.yaml')
       @data = YAML.load_file input_files_yaml
       @reads_got = false
+      bin = Which.which 'atron'
+      if !bin || bin.empty?
+        raise 'Assemblotron binary (atron) was not found in PATH'
+      end
+      @atron = bin.first
     end
 
     # For each dataset, run a full parameter sweep at a variety of sampling
@@ -46,7 +51,7 @@ module AssemblotronPaper
                   # run assemblotron with the specified sampling method
                   # and the rep_no as seed
                   cmdstr =
-                    "atron" +
+                    @atron +
                     " --left #{dataset[:left]}" +
                     " --right #{dataset[:right]}" +
                     " --threads #{@opts.threads}" +
