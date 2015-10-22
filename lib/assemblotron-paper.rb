@@ -13,6 +13,7 @@ module AssemblotronPaper
       @gem_dir = Gem.loaded_specs['assemblotron-paper'].full_gem_path
       input_files_yaml = File.join(@gem_dir, 'metadata', 'input_files.yaml')
       @data = YAML.load_file input_files_yaml
+      @reads_got = false
     end
 
     # For each dataset, run a full parameter sweep at a variety of sampling
@@ -128,6 +129,8 @@ module AssemblotronPaper
     # dataset, check if it is present. If not, download it.
     def maybe_get_read_data
 
+      return if @reads_got
+
       Dir.chdir File.join(@gem_dir, 'data') do
 
         @data[:reads].each_pair do |species, dataset|
@@ -163,6 +166,8 @@ module AssemblotronPaper
         end
 
       end
+
+      @reads_got = true
 
     end # maybe_get_read_data
 
