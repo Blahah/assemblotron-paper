@@ -16,7 +16,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'fixwhich', '~> 1.0', '>= 1.0.2'
   gem.add_dependency 'bindeps', '~> 1.1', '>= 1.1.2'
   gem.add_dependency 'transrate', '1.0.1'
-  # gem.add_dependency 'assemblotron' TODO: activate when version fixed
   gem.add_dependency 'trollop', '~> 2.1', '>= 2.1.1'
 
   gem.add_development_dependency 'rake', '~> 10.3', '>= 10.3.2'
