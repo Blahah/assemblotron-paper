@@ -31,13 +31,16 @@ module AssemblotronPaper
 
             [1.0, 0.2, 0.1, 0.05].each do |rate|
 
-              ['graph', 'stream'].each do |sampler|
+              samplers = rate == 1.0 ? ['stream'] : ['graph', 'stream']
+
+              samplers.each do |sampler|
 
                 3.times do |n|
 
                   rep_no = n + 1
 
-                  puts "Running full sweep using sampler #{sampler} at sample rate #{rate} (rep #{rep_no})"
+                  puts "Running full sweep using sampler #{sampler}" +
+                       " at sample rate #{rate} (rep #{rep_no})"
 
                   # run assemblotron with the specified sampling method
                   # and the rep_no as seed
@@ -46,7 +49,7 @@ module AssemblotronPaper
                     " --left #{dataset[:left]}" +
                     " --right #{dataset[:right]}" +
                     " --threads #{@opts.threads}" +
-                    " --skip-subsample" +
+                    "#{rate == 1.0 ? '' : ' --skip-subsample'}" +
                     " --sampler #{sampler}" +
                     " --skip-final" +
                     " --optimiser sweep" +
