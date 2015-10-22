@@ -8,32 +8,120 @@ module AssemblotronPaper
 
   class AssemblotronPaper
 
-    def initialize
+    def initialize opts
+      @opts = opts
       @gem_dir = Gem.loaded_specs['assemblotron-paper'].full_gem_path
       input_files_yaml = File.join(@gem_dir, 'metadata', 'input_files.yaml')
       @data = YAML.load_file input_files_yaml
     end
 
+    # For each dataset, run a full parameter sweep at a variety of sampling
+    # rates, including with no sampling (i.e. the full dataset).
+    #
+    # For the sampled runs, do both stream sampling and graph sampling.
     def run_full_sweeps
 
       maybe_get_read_data
 
-      ['graph', 'stream'].each do |sampler|
+      Dir.chdir File.join(@gem_dir, 'data') do
 
-        3.times do |n|
+        @data[:reads].each_pair do |species, dataset|
 
-          rep_no = n + 1
+          Dir.chdir species.to_s do
 
-          puts "Running full sweep using sampler #{sampler} (rep #{rep_no})"
-          # un assemblotron with the specified sampling method
-          # and the rep_no as seed
+            [1.0, 0.2, 0.1, 0.05].each do |rate|
+
+              ['graph', 'stream'].each do |sampler|
+
+                3.times do |n|
+
+                  rep_no = n + 1
+
+                  puts "Running full sweep using sampler #{sampler} at sample rate #{rate} (rep #{rep_no})"
+
+                  # run assemblotron with the specified sampling method
+                  # and the rep_no as seed
+                  cmdstr =
+                    "atron" +
+                    " --left #{dataset[:left]}" +
+                    " --right #{dataset[:right]}" +
+                    " --threads #{@opts.threads}" +
+                    " --skip-subsample" +
+                    " --sampler #{sampler}" +
+                    " --skip-final" +
+                    " --optimiser sweep" +
+                    " --seed #{rep_no}"
+                  cmd = Cmd.new(cmdstr)
+                  cmd.run
+
+                  save_logs(cmd.stdout, species.to_s, sampler, rate, rep_no)
+                  save_csv(cmd.stdout, species.to_s, sampler, rate, rep_no)
+
+                end
+
+              end
+
+            end
+
+          end
 
         end
 
       end
 
-    end
+    end # run_full_sweeps
 
+
+    # Save the log output of an Assemblotron run
+    def save_logs(stdout, *args)
+
+      logfile = "#{args.join '_'}.log"
+      logfile = File.expand_path logfile
+
+      File.open(logfile) do |f|
+
+        f.write stdout
+        log.info "Assemblotron sweep log saved to #{logfile}"
+
+      end
+
+    end # save_logs
+
+
+    # Save the results of an assemblotron run as a CSV file
+    # by parsing the logs
+    def save_csv(stdout, *args)
+
+      lineregex = /parameters: K:(\d+), d:(\d+), e:(\d+) \| score: (\S+)/
+
+      csvfile = "#{args.join '_'}.csv"
+      csvfile = File.expand_path csvfile
+
+      CSV.open(csvfile, 'w') do |out|
+
+        out << ['K', 'd', 'e', 'score']
+
+        stdout.split("\n").each do |line|
+
+          next unless line =~ /^run/
+
+          k, d, e, score = line.match(lineregex).captures
+          score = score.to_f.round(6)
+          score = 0.0 if score < 0.0001
+
+          out << [k, d, e, score]
+
+        end
+
+        log.info "Assemblotron sweep data saved to #{csvfile}"
+
+      end
+
+    end # save_csv
+
+
+    # Read the file that specifies which datsets are needed. For each
+    # dataset, check if it is present. If not, download it.
     def maybe_get_read_data
 
       Dir.chdir File.join(@gem_dir, 'data') do
@@ -72,7 +160,7 @@ module AssemblotronPaper
 
       end
 
-    end
+    end # maybe_get_read_data
 
 
   end

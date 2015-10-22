@@ -2,4 +2,8 @@ source "https://rubygems.org"
 
 gemspec
 
-gem 'assemblotron', :git => 'git://github.com/blahah/assemblotron.git', :branch => 'dryrun'
+# http://yehudakatz.com/2010/12/16/clarifying-the-roles-of-the-gemspec-and-gemfile/
+
+gem 'assemblotron',
+    :git => 'git://github.com/blahah/assemblotron.git',
+    :branch => 'dryrun'

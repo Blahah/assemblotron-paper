@@ -10,7 +10,7 @@ opts = Trollop::options do
   opt :threads, "Number of threads to use", :default => 8, :type => :int
 end
 
-paper = AssemblotronPaper::AssemblotronPaper.new
+paper = AssemblotronPaper::AssemblotronPaper.new opts
 
 if opts.all || opts.get_reads
   paper.maybe_get_read_data

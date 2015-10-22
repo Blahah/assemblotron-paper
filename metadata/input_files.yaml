@@ -6,6 +6,7 @@
     :right:
       :url: ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR097/SRR097897/SRR097897_2.fastq.gz
       :filename: SRR097897_2.fastq
+    :spots: 3740521
   :arabidopsis:
     :left:
       :url: ftp://ftp.sra.ebi.ac.uk/vol1/fastq/DRR016/DRR016125/DRR016125_1.fastq.gz
@@ -13,3 +14,4 @@
     :right:
       :url:  ftp://ftp.sra.ebi.ac.uk/vol1/fastq/DRR016/DRR016125/DRR016125_2.fastq.gz
       :filename: DRR016125_2.fastq
+    :spots: 12147911
