@@ -3,15 +3,19 @@
     :left:
       :url: ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR097/SRR097897/SRR097897_1.fastq.gz
       :filename: SRR097897_1.fastq
+      :md5sum: 9ba2b3f5b88465fc980c7f454e5d62b3
     :right:
       :url: ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR097/SRR097897/SRR097897_2.fastq.gz
       :filename: SRR097897_2.fastq
+      :md5sum: 111a48305fe8b2437320f55ee9667c14
     :spots: 3740521
   :arabidopsis:
     :left:
       :url: ftp://ftp.sra.ebi.ac.uk/vol1/fastq/DRR016/DRR016125/DRR016125_1.fastq.gz
       :filename: DRR016125_1.fastq
+      :md5sum: 5cf919015e08833eb93df828dff697b3
     :right:
       :url:  ftp://ftp.sra.ebi.ac.uk/vol1/fastq/DRR016/DRR016125/DRR016125_2.fastq.gz
       :filename: DRR016125_2.fastq
+      :md5sum: 6d6acae70b31ba884ffc99ed80d5e556
     :spots: 12147911
