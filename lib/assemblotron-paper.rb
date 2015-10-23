@@ -198,7 +198,6 @@ module AssemblotronPaper
 
     end
 
-
   end
 
   class Cmd
