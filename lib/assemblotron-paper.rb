@@ -3,6 +3,7 @@ require 'yaml'
 require 'open3'
 require 'fixwhich'
 require 'fileutils'
+require 'bundler/cli/binstubs'
 
 module AssemblotronPaper
 
@@ -10,15 +11,14 @@ module AssemblotronPaper
 
     def initialize opts
       @opts = opts
-      @gem_dir = Gem.loaded_specs['assemblotron-paper'].full_gem_path
-      input_files_yaml = File.join(@gem_dir, 'metadata', 'input_files.yaml')
+      spec = Gem.loaded_specs['assemblotron-paper']
+      @gem_dir = spec.full_gem_path
+      input_files_yaml = File.join(@gem_dir,
+                                   'metadata',
+                                   'input_files.yaml')
       @data = YAML.load_file input_files_yaml
       @reads_got = false
-      bin = Which.which 'atron'
-      if !bin || bin.empty?
-        raise 'Assemblotron binary (atron) was not found in PATH'
-      end
-      @atron = bin.first
+      check_assemblotron
     end
 
     # For each dataset, run a full parameter sweep at a variety of sampling
@@ -175,6 +175,22 @@ module AssemblotronPaper
       @reads_got = true
 
     end # maybe_get_read_data
+
+    # check assemblotron bin is installed
+    def check_assemblotron
+
+      binstubs_dir = File.join(@gem_dir, 'binstubs')
+      @atron = File.join(binstubs_dir, 'atron')
+
+      unless File.exists? @atron
+
+        puts "Assemblotron binaries not found - installing"
+        `bundle install`
+        `bundle install --binstubs #{binstubs_dir}`
+
+      end
+
+    end
 
 
   end
