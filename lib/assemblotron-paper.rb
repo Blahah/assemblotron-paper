@@ -63,6 +63,10 @@ module AssemblotronPaper
                   cmd = Cmd.new(cmdstr)
                   cmd.run
 
+                  unless cmd.status.success?
+                    raise "Assemblotron failed: \n#{cmd.stderr}"
+                  end
+
                   ratestr = "#{(rate * 100).to_i}pc"
                   save_logs(cmd.stdout, species.to_s, sampler, ratestr, rep_no)
                   save_csv(cmd.stdout, species.to_s, sampler, ratestr, rep_no)
