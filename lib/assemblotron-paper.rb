@@ -52,8 +52,8 @@ module AssemblotronPaper
                   # and the rep_no as seed
                   cmdstr =
                     @atron +
-                    " --left #{dataset[:left]}" +
-                    " --right #{dataset[:right]}" +
+                    " --left #{dataset[:left][:filename]}" +
+                    " --right #{dataset[:right][:filename]}" +
                     " --threads #{@opts.threads}" +
                     "#{rate == 1.0 ? '' : ' --skip-subsample'}" +
                     " --sampler #{sampler}" +
