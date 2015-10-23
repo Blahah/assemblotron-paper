@@ -3,7 +3,6 @@ require 'yaml'
 require 'open3'
 require 'fixwhich'
 require 'fileutils'
-require 'bundler/cli/binstubs'
 
 module AssemblotronPaper
 
