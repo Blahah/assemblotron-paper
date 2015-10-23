@@ -90,7 +90,7 @@ module AssemblotronPaper
       File.open(logfile, 'w') do |f|
 
         f.write stdout
-        log.info "Assemblotron sweep log saved to #{logfile}"
+        puts "Assemblotron sweep log saved to #{logfile}"
 
       end
 
