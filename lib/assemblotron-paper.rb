@@ -61,7 +61,9 @@ module AssemblotronPaper
                     " --optimiser sweep" +
                     " --seed #{rep_no}"
                   cmd = Cmd.new(cmdstr)
+                  start = Time.now
                   cmd.run
+                  puts "Assemblotron command ran in #{Time.now - start} seconds"
 
                   unless cmd.status.success?
                     raise "Assemblotron failed: \n#{cmd.stderr}"
