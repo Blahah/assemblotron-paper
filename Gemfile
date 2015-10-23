@@ -7,4 +7,4 @@ gemspec
 gem 'assemblotron',
     :git => 'git://github.com/blahah/assemblotron.git',
     :branch => 'dryrun',
-    :ref => '8d80a6715cc21b0e480a8e043d1df8f89a7a057f'
+    :ref => 'c696532d6884404db680f12669beae6bd56ff190'
