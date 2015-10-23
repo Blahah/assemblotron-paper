@@ -123,7 +123,7 @@ module AssemblotronPaper
 
         end
 
-        log.info "Assemblotron sweep data saved to #{csvfile}"
+        puts "Assemblotron sweep data saved to #{csvfile}"
 
       end
 
