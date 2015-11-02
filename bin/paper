@@ -7,7 +7,9 @@ opts = Trollop::options do
   opt :all, "Run the entire paper analysis"
   opt :get_reads, "Download read data (if not already present)"
   opt :sweep, "Run full sweeps"
+  opt :opt_sim, "Run optimisation simulation"
   opt :threads, "Number of threads to use", :default => 8, :type => :int
+  opt :force, "Force overwriting of existing files"
 end
 
 paper = AssemblotronPaper::AssemblotronPaper.new opts
@@ -18,4 +20,8 @@ end
 
 if opts.all || opts.sweep
   paper.run_full_sweeps
+end
+
+if opts.all || opts.opt_sim
+  paper.run_optimisation_sim
 end

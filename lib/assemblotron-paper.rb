@@ -33,6 +33,8 @@ module AssemblotronPaper
 
         @data[:reads].each_pair do |species, dataset|
 
+          puts "Running full sweeps for #{species.to_s}"
+
           Dir.chdir species.to_s do
 
             [1.0, 0.2, 0.1, 0.05].each do |rate|
@@ -44,6 +46,16 @@ module AssemblotronPaper
                 3.times do |n|
 
                   rep_no = n + 1
+
+                  ratestr = "#{(rate * 100).to_i}pc"
+                  params = [species.to_s, sampler, ratestr, rep_no]
+                  csvfile = File.expand_path "#{params.join '_'}.csv"
+                  if File.exists?(csvfile) && !@opts.force
+                    puts "Skipping sweep [sampler: #{sampler}" +
+                         " rate: #{rate} rep: #{rep_no}] -" +
+                         " output file exists"
+                    next
+                  end
 
                   puts "Running full sweep using sampler #{sampler}" +
                        " at sample rate #{rate} (rep #{rep_no})"
@@ -69,7 +81,6 @@ module AssemblotronPaper
                     raise "Assemblotron failed: \n#{cmd.stderr}"
                   end
 
-                  ratestr = "#{(rate * 100).to_i}pc"
                   save_logs(cmd.stdout, species.to_s, sampler, ratestr, rep_no)
                   save_csv(cmd.stdout, species.to_s, sampler, ratestr, rep_no)
 
@@ -86,6 +97,30 @@ module AssemblotronPaper
       end
 
     end # run_full_sweeps
+
+    # Using the yeast dataset, run the various optimisation algorithms
+    # 100 times each.
+    def run_optimisation_sim
+      # TODO: expand to include SPEA2
+      simdata_path = File.join(@gem_dir, 'data',
+                               'yeast', 'yeast_stream_100pc_1.csv')
+      if File.exist?(simdata_path) && !@opts.force
+        puts "Skipping optimisation simulation - output file already exists"
+        return
+      end
+      cmdstr =
+        @atron +
+        " --simulation #{simdata_path}"
+        " --optimiser tabu"
+      cmd = Cmd.new(cmdstr)
+      start = Time.now
+      cmd.run
+      puts "Optimisation simulation ran in #{Time.now - start} seconds"
+
+      unless cmd.status.success?
+        raise "Assemblotron failed: \n#{cmd.stderr}"
+      end
+    end
 
 
     # Save the log output of an Assemblotron run
