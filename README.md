@@ -14,6 +14,7 @@ Paper for [assemblotron](https://github.com/Blahah/assemblotron)
 ```bash
 git clone https://github.com/Blahah/assemblotron-paper.git
 bundle install
+bundle install --binstubs
 bundle exec bin/paper --help
 ```
 
