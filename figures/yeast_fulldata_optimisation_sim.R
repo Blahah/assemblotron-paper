@@ -24,19 +24,19 @@ for (csv in dir(pattern='*/*_scores.csv', recursive = T)) {
 stderr <- function(x) sd(x)/sqrt(length(x))
 
 best <- group_by(dt, species, iteration) %>%
-  summarise(mean=mean(best), stderr=stderr(best))
+  summarise(med=median(best), up=quantile(best, 0.95), down=quantile(best, 0.05))
 best$type <- 'Best score'
 score <- group_by(dt, species, iteration) %>%
-  summarise(mean=mean(score), stderr=stderr(score))
+  summarise(med=median(score), up=quantile(score, 0.95), down=quantile(score, 0.05))
 score$type <- 'Current score'
 
 score_plot <- rbind(best, score) %>%
-  ggplot(aes(x=iteration, y=mean, colour=species,
-             ymin=mean-stderr,
-             ymax=mean+stderr)) +
+  ggplot(aes(x=iteration, y=med, colour=species,
+             ymin=down,
+             ymax=up)) +
   geom_pointrange() +
   xlab('Assemblies performed') +
-  ylab('Transrate score (mean +/- stderr over 100 runs)') +
+  ylab('Transrate score (median over 100 runs)') +
   facet_grid(type~.) +
   theme_bw()
 
