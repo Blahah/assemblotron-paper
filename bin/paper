@@ -3,7 +3,35 @@
 require 'assemblotron-paper'
 require 'trollop'
 
-opts = Trollop::options do
+bin_name = File.basename __FILE__
+
+parser = Trollop::Parser.new do
+  banner <<-EOS
+
+This app produces the Assemblotron paper. The Assemblotron software
+can be downloaded at https://github.com/Blahah/assemblotron.
+
+Authors:
+
+  Richard Smith-Unna, Parsa Akbari, Chris Boursnell, and Julian Hibberd
+
+Citation:
+
+  Smith-Unna et al. (2015) https://github.com/Blahah/assemblotron-paper
+
+Usage:
+
+  #{bin_name} [options]
+
+Examples:
+
+  #{bin_name} --help # show help
+  #{bin_name} --get-reads # download data used in paper if not already present
+  #{bin_name} --get-reads --force # download data, overwriting existing files
+  #{bin_name} --all --threads 32 # run all analyses using 32 threads
+
+Options:
+EOS
   opt :all, "Run the entire paper analysis"
   opt :get_reads, "Download read data (if not already present)"
   opt :sweep, "Run full sweeps"
@@ -12,16 +40,21 @@ opts = Trollop::options do
   opt :force, "Force overwriting of existing files"
 end
 
-paper = AssemblotronPaper::AssemblotronPaper.new opts
+opts = Trollop::with_standard_exception_handling parser do
+  raise Trollop::HelpNeeded if ARGV.empty? # show help screen
+  parser.parse ARGV
+end
 
-if opts.all || opts.get_reads
-  paper.maybe_get_read_data
+controller = AssemblotronPaper::Controller.new opts
+
+if opts.all || opts.get_reads || opts.sweep
+  controller.maybe_get_read_data
 end
 
 if opts.all || opts.sweep
-  paper.run_full_sweeps
+  controller.run_full_sweeps
 end
 
 if opts.all || opts.opt_sim
-  paper.run_optimisation_sim
+  controller.run_optimisation_sim
 end
