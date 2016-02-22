@@ -13,3 +13,8 @@ binstubs
 .bundle
 
 .DS_Store
+
+Gemfile.lock
+
+# huge data files
+data
