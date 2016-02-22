@@ -4,6 +4,6 @@ require 'open3'
 require 'fixwhich'
 require 'fileutils'
 require 'csv'
-%w[cmd data deps optimiser_sim sweep controller].each do |class_def|
+%w[cmd data deps optimiser_sim sweep controller performance].each do |class_def|
   require "assemblotron-paper/#{class_def}"
 end

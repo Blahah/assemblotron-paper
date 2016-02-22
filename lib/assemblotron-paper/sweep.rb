@@ -17,6 +17,8 @@ module AssemblotronPaper
 
         @data[:reads].each_pair do |species, dataset|
 
+          next if @opts.skip.include? species
+
           puts "Running full sweeps for #{species.to_s}"
 
           Dir.chdir species.to_s do
@@ -36,6 +38,8 @@ module AssemblotronPaper
     end # run_all
 
     def run_sweep(species, dataset, rate)
+
+      return if @opts.skip.include? species
 
       samplers = rate == 1.0 ? ['stream'] : ['graph', 'stream']
 

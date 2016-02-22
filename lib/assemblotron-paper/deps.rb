@@ -4,10 +4,9 @@ module AssemblotronPaper
 
     attr_accessor :atron
 
-    def initialize(opts, gem_dir, atron, data)
-      @opts, @gem_dir, @atron, @data = opts, gem_dir, atron, data
+    def initialize(opts, gem_dir, data)
+      @opts, @gem_dir, @data = opts, gem_dir, data
     end
-
 
     # check assemblotron bin is installed
     def check_assemblotron

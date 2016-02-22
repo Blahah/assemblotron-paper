@@ -3,6 +3,8 @@
 require 'assemblotron-paper'
 require 'trollop'
 
+puts `bundle exec which atron`
+
 bin_name = File.basename __FILE__
 
 parser = Trollop::Parser.new do
@@ -35,15 +37,20 @@ EOS
   opt :all, "Run the entire paper analysis"
   opt :get_reads, "Download read data (if not already present)"
   opt :sweep, "Run full sweeps"
-  opt :opt_sim, "Run optimisation simulation"
+  opt :simulation, "Run optimisation simulation"
+  opt :performance, "Run Assemblotron performance analysis"
   opt :threads, "Number of threads to use", :default => 8, :type => :int
   opt :force, "Force overwriting of existing files"
+  opt :skip, "Comma-separated list of species to skip in analysis",
+      :type => :string
 end
 
 opts = Trollop::with_standard_exception_handling parser do
   raise Trollop::HelpNeeded if ARGV.empty? # show help screen
   parser.parse ARGV
 end
+
+opts[:skip] = opts.skip.nil? ? [] : opts.skip.split(',')
 
 controller = AssemblotronPaper::Controller.new opts
 
@@ -57,4 +64,8 @@ end
 
 if opts.all || opts.opt_sim
   controller.run_optimisation_sim
+end
+
+if opts.all || opts.performance
+  controller.measure_performance
 end
